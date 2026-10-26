@@ -29,19 +29,9 @@ Boundary families this tool was exploded into, and what each one's own real invo
 | Family | Toolchain | Compiles | Result |
 |---|---|---|---|
 | `netfx45` | .NET Framework 4.5 (Mono 6.8.0.105 BCL profile 4.5) | yes | NOT_INSTALLED |
-| `netfx46` | .NET Framework 4.6 (Mono 6.8.0.105 BCL profile 4.6) | yes | NOT_INSTALLED |
-| `netcoreapp30` | netcoreapp3.0 (manual csc, SDK 8.0.131's compiler + installed 8.0.31 runtime, rollForward LatestMajor) | yes | NOT_INSTALLED |
-| `net9` | net9.0 (manual csc, SDK 10.0.112's compiler + installed 10.0.12 runtime, rollForward LatestMajor) | yes | NOT_INSTALLED |
-| `net10` | net10.0 (dotnet-sdk-10.0, native) | yes | CLEAN |
 
 Per-family notes:
 
 **netfx45**: Mono compiles and runs real .NET Framework 4.5 code, but there is no MSBuild/`dotnet build` pipeline in that path at all -- `Microsoft.CodeAnalysis.NetAnalyzers` hooks into the SDK-style build pipeline (`dotnet build`'s own analyzer targets), not into `mcs`. No SDK-style build was ever attempted for this family; it genuinely cannot happen, independent of NuGet.
 
-**netfx46**: Same reason as netfx45: Mono's `mcs`/`mono` path has no SDK-style `dotnet build` pipeline for NetAnalyzers to hook into.
-
-**netcoreapp30**: `dotnet build` was actually attempted and fails at restore -- `NU1301`, unable to reach `api.nuget.org` -- before Roslyn or its analyzers ever run. Neither installed SDK (8.0.131, 10.0.112) bundles netcoreapp3.0's own `Microsoft.NETCore.App.Ref` targeting pack; it is NuGet-only and NuGet is blocked at the egress proxy (measured directly, not assumed).
-
-**net9**: Same failure mode as netcoreapp3.0, one family later: `dotnet build` under SDK 10.0.112 reaches restore and fails with the identical `NU1301` -- net9.0's own targeting pack is NuGet-only too. The manual `csc` compile this corpus uses elsewhere for net9.0 bypasses MSBuild entirely, which is exactly why it cannot carry the MSBuild-integrated NetAnalyzers pipeline with it.
-
-**net10**: `dotnet build` ran for real with `Microsoft.CodeAnalysis.NetAnalyzers` bundled in the SDK, `AnalysisMode=All`, `AnalysisLevel=latest-all` and `TreatWarningsAsErrors=true` -- 0 warnings, 0 errors.
+This repo carries only the `netfx45` family.
