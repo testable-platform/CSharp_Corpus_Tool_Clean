@@ -30,10 +30,8 @@ Boundary families this tool was exploded into, and what each one's own real invo
 
 | Family | Toolchain | Compiles | Result |
 |---|---|---|---|
-| `netfx45` | .NET Framework 4.5 (Mono 6.8.0.105 BCL profile 4.5) | yes | CLEAN |
-| `netfx46` | .NET Framework 4.6 (Mono 6.8.0.105 BCL profile 4.6) | yes | CLEAN |
-| `netcoreapp30` | netcoreapp3.0 (manual csc, SDK 8.0.131's compiler + installed 8.0.31 runtime, rollForward LatestMajor) | yes | CLEAN |
 | `net9` | net9.0 (manual csc, SDK 10.0.112's compiler + installed 10.0.12 runtime, rollForward LatestMajor) | yes | CLEAN |
-| `net10` | net10.0 (dotnet-sdk-10.0, native) | yes | CLEAN |
 
 Real measured metrics, identical across all five families: `maxCyclomaticComplexity=2, maxCognitiveComplexity=1, lcom=0, cbo=3, dit=0, codeHealth=10, codeHealthCategory=healthy` -- every documented threshold cleared by a wide margin. unilyze was re-invoked against each family's own compiled-for-real copy of the identical source; the same real metrics came back every time, exactly as expected for a version-blind tool.
+
+This repo carries only the `net9` family.
